@@ -1,14 +1,17 @@
-import React from 'react';
-import youtube from "./api/youtube";
-import { Grid } from "@material-ui/core";
-import { components }  from "./components/SearchBar";
-import { VideoList }  from "./components/VideoList";
-import { VideoDetails }  from "./components/VideoDetails";
 
-class App extends React.Component{
-    render(){
-        return(
-      <Grid style={{ justifyContent: "center" }} container spacing={10}>
+import React, { useState } from "react";
+import { Grid } from "@material-ui/core";
+
+import { SearchBar, VideoList, VideoDetail } from "./components";
+
+import youtube from "./api/youtube";
+
+export default () => {
+  const [videos, setVideos] = useState([]);
+  const [selectedVideo, setSelectedVideo] = useState(null);
+
+  return (
+    <Grid style={{ justifyContent: "center" }} container spacing={10}>
       <Grid item xs={11}>
         <Grid container spacing={10}>
           <Grid item xs={12}>
@@ -23,7 +26,19 @@ class App extends React.Component{
         </Grid>
       </Grid>
     </Grid>
-        )
-    }
+  );
+
+  async function handleSubmit(searchTerm) {
+    const { data: { items: videos } } = await youtube.get("search", {
+      params: {
+        part: "snippet",
+        maxResults: 5,
+        key: 'AIzaSyDoRqF-KvgtX1fpi3lMqtW0m6V16HDN3gI',
+        q: searchTerm,
+      }
+    });
+
+    setVideos(videos);
+    setSelectedVideo(videos[0]);
+  }
 }
-export default App;
