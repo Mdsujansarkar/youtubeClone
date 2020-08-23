@@ -1,8 +1,28 @@
 import React from 'react';
+import youtube from "./api/youtube";
+import { Grid } from "@material-ui/core";
+import { components }  from "./components/SearchBar";
+import { VideoList }  from "./components/VideoList";
+import { VideoDetails }  from "./components/VideoDetails";
+
 class App extends React.Component{
     render(){
         return(
-            <h1>Youtube clone</h1>
+      <Grid style={{ justifyContent: "center" }} container spacing={10}>
+      <Grid item xs={11}>
+        <Grid container spacing={10}>
+          <Grid item xs={12}>
+            <SearchBar onSubmit={handleSubmit} />
+          </Grid>
+          <Grid item xs={8}>
+            <VideoDetail video={selectedVideo} />
+          </Grid>
+          <Grid item xs={4}>
+            <VideoList videos={videos} onVideoSelect={setSelectedVideo} />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Grid>
         )
     }
 }
